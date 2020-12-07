@@ -169,32 +169,46 @@ namespace manipulacionBD
         {
             if (maskedcvesucursal.Text != null && txt_Zona.Text != "" && txt_direccion.Text != "" && txt_telefono.Text != "" && txt_email.Text != "")
             {
-                if (validarCampos(maskedcvesucursal.Text, txt_Zona.Text, txt_direccion.Text, Convert.ToInt32(txt_telefono.Text), txt_email.Text, "insertar"))
+                System.Text.RegularExpressions.Regex email = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z][\w\.-]{2,28}[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
+                if (txt_email.Text.Length > 0)
                 {
-                    String Fragmento = getFragmento(txt_Zona.Text);
-                    DialogResult confEliminacion = MessageBox.Show("El registro " + maskedcvesucursal.Text + " será insertado", "Advertencia", MessageBoxButtons.YesNo);
-                    if (confEliminacion == DialogResult.Yes)
+                    if (!email.IsMatch(txt_email.Text))
                     {
-                        cmd = new MySqlCommand("insert into " + Fragmento + " values(@id, @zona, @direccion, @telefono, @email)", conexionBD);
-                        conexionBD.Open();
-                        cmd.Parameters.AddWithValue("@id", Convert.ToInt32(maskedcvesucursal.Text));
-
-                        cmd.Parameters.AddWithValue("@zona", txt_Zona.Text);
-                        cmd.Parameters.AddWithValue("@direccion", txt_direccion.Text);
-                        cmd.Parameters.AddWithValue("@telefono", Convert.ToInt32(txt_telefono.Text));
-                        cmd.Parameters.AddWithValue("@email", txt_email.Text);
-                        cmd.ExecuteNonQuery();
-                        conexionBD.Close();
-                        MessageBox.Show("Insertado con éxito");
-                        DisplayData();
-                        ClearData();
+                        MessageBox.Show("Email invalido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
                     }
                     else
                     {
-                        MessageBox.Show("Operación Cacelada");
+                        if (validarCampos(maskedcvesucursal.Text, txt_Zona.Text, txt_direccion.Text, Convert.ToInt32(txt_telefono.Text), txt_email.Text, "insertar"))
+                        {
+
+                            String Fragmento = getFragmento(txt_Zona.Text);
+                            DialogResult confEliminacion = MessageBox.Show("El registro " + maskedcvesucursal.Text + " será insertado", "Advertencia", MessageBoxButtons.YesNo);
+                            if (confEliminacion == DialogResult.Yes)
+                            {
+                                cmd = new MySqlCommand("insert into " + Fragmento + " values(@id, @zona, @direccion, @telefono, @email)", conexionBD);
+                                conexionBD.Open();
+                                cmd.Parameters.AddWithValue("@id", Convert.ToInt32(maskedcvesucursal.Text));
+
+                                cmd.Parameters.AddWithValue("@zona", txt_Zona.Text);
+                                cmd.Parameters.AddWithValue("@direccion", txt_direccion.Text);
+                                cmd.Parameters.AddWithValue("@telefono", Convert.ToInt32(txt_telefono.Text));
+                                cmd.Parameters.AddWithValue("@email", txt_email.Text);
+                                cmd.ExecuteNonQuery();
+                                conexionBD.Close();
+                                MessageBox.Show("Insertado con éxito");
+                                DisplayData();
+                                ClearData();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Operación Cacelada");
+                            }
+
+                        }
                     }
-                    
                 }
+               
             }
             else
             {
@@ -254,7 +268,41 @@ namespace manipulacionBD
 
         private void button_Cambio_Click(object sender, EventArgs e)//Procesos del botón Cambio
         {
+            if (maskedcvesucursal.Text != null && txt_Zona.Text != "" && txt_direccion.Text != "" && txt_telefono.Text != "" && txt_email.Text != "")
+            {
+                System.Text.RegularExpressions.Regex email = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z][\w\.-]{2,28}[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
+                if (txt_email.Text.Length > 0)
+                {
+                    if (!email.IsMatch(txt_email.Text))
+                    {
+                        MessageBox.Show("Email invalido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                    }
+                    else
+                    {
+                        if (validarCampos(maskedcvesucursal.Text, txt_Zona.Text, txt_direccion.Text, Convert.ToInt32(txt_telefono.Text), txt_email.Text, "insertar"))
+                        {
+
+                            String Fragmento = getFragmento(txt_Zona.Text);
+                            DialogResult confEliminacion = MessageBox.Show("El registro " + maskedcvesucursal.Text + " será insertado", "Advertencia", MessageBoxButtons.YesNo);
+                            if (confEliminacion == DialogResult.Yes)
+                            {
+                               //TOdo codigo de update aqui
+                            }
+                            else
+                            {
+                                MessageBox.Show("Operación Cacelada");
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("¡Porfavor! Inserte valores");
+            }
         }
 
         private void button_Administracion_Click(object sender, EventArgs e)
@@ -274,18 +322,7 @@ namespace manipulacionBD
            
         }
 
-        private void txt_email_Validating(object sender, CancelEventArgs e)
-        {
-            System.Text.RegularExpressions.Regex  email = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z][\w\.-]{2,28}[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
-            if (txt_email.Text.Length>0) 
-            {
-                if (!email.IsMatch(txt_email.Text))
-                {
-                    MessageBox.Show("Email invalido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                }
-            }
-        }
+       
     }
 
 }

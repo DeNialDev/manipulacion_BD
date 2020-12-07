@@ -84,7 +84,7 @@
             this.txt_email.Name = "txt_email";
             this.txt_email.Size = new System.Drawing.Size(178, 26);
             this.txt_email.TabIndex = 9;
-            this.txt_email.Validating += new System.ComponentModel.CancelEventHandler(this.txt_email_Validating);
+            
             // 
             // flowLayoutPanel1
             // 
