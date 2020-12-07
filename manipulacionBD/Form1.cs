@@ -183,8 +183,8 @@ namespace manipulacionBD
                         {
 
                             String Fragmento = getFragmento(txt_Zona.Text);
-                            DialogResult confEliminacion = MessageBox.Show("El registro " + maskedcvesucursal.Text + " será insertado", "Advertencia", MessageBoxButtons.YesNo);
-                            if (confEliminacion == DialogResult.Yes)
+                            DialogResult confAlta = MessageBox.Show("El registro " + maskedcvesucursal.Text + " será insertado", "Advertencia", MessageBoxButtons.YesNo);
+                            if (confAlta == DialogResult.Yes)
                             {
                                 cmd = new MySqlCommand("insert into " + Fragmento + " values(@id, @zona, @direccion, @telefono, @email)", conexionBD);
                                 conexionBD.Open();
